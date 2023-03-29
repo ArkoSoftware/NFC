@@ -4,8 +4,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {auth, db} from '../../firebase';
 import NfcManager, {NfcTech, Ndef} from 'react-native-nfc-manager';
 import {
+    collection,
   deleteDoc,
   doc,
+  getDoc,
+  getDocs,
   serverTimestamp,
   setDoc,
   updateDoc,
@@ -17,16 +20,13 @@ NfcManager.start();
 const Scanner = ({navigation}) => {
   const [searching, setSearching] = useState(false);
   const [tag, setTag] = useState(null);
+  
   const authenticate = async text => {
     if (auth.currentUser) {
       if (auth.currentUser.emailVerified) {
         const doc1 = doc(db, 'tag', text);
-        await setDoc(doc1, {
-          activated: true,
-          activationTime: serverTimestamp(),
-          user:auth.currentUser.uid
-        },{merge:true});
-        navigation.navigate('EnterPin');
+        const snap = await getDoc(doc1);
+        navigation.navigate('GroupList',{user:snap.data().user});
       }
     } else {
       navigation.navigate('Signup');
@@ -59,16 +59,14 @@ const Scanner = ({navigation}) => {
   }
   return (
     <SafeAreaView className="flex-1 bg-slate-800">
-      <TouchableOpacity
-        activeOpacity={0.9}
-        onPress={() =>
-          auth.currentUser
-            ? navigation.navigate('EnterPin')
-            : navigation.navigate('Login')
-        }
-        className="m-4 ml-auto ">
-        <Icon name="person" color={'#fff'} size={24} />
-      </TouchableOpacity>
+      <View className="flex flex-row mt-4 px-3 ">
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="chevron-back-outline" color="#cfcfcf" size={28} />
+        </TouchableOpacity>
+        <Text className="text-white text-xl my-auto mx-auto font-bold">
+          Join Group
+        </Text>
+      </View>
 
       <View className="my-auto mx-auto h-full w-full">
         {searching ? (

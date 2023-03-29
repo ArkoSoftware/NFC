@@ -13,11 +13,21 @@ import Splash from "../screen/Splash";
 import VerifyEmail from "../screen/VerifyEmail";
 import UploadFile from "../screen/UploadFile";
 import OpenImage from "../screen/OpenImage";
+import GetUserName from "../screen/GetUserName";
+import AddPin from "../screen/AddPin";
+import AddGroup from "../screen/AddGroup";
+import GroupNFC from "../screen/GroupNFC";
+import CreateGroup from "../screen/CreateGroup";
+import EnterGroupPin from "../screen/EnterGroupPin";
+import OpenGroup from "../screen/OpenGroup";
+import UploadGroup from "../screen/UploadGroup";
+import GroupList from "../screen/GroupList";
 
 const Stack = createNativeStackNavigator();
 
 const MainRouter = () => {
   const [state, setState] = useState(0);
+  console.log(state)
   onAuthStateChanged(auth, (user) => {
     if (user) {
       if (user.emailVerified) {
@@ -34,11 +44,20 @@ const MainRouter = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={Scanner} />
+        <Stack.Screen name="Home" component={Scanner} />
+
           <Stack.Screen name="EnterPin" component={EnterPin} />
           <Stack.Screen name="Gallery" component={Gallery} />
           <Stack.Screen name="Upload" component={UploadFile} />
           <Stack.Screen name="OpenImage" component={OpenImage} />
+          <Stack.Screen name="AddGroup" component={AddGroup} />
+          <Stack.Screen name="GroupNFC" component={GroupNFC} />
+          <Stack.Screen name="CreateGroup" component={CreateGroup} />
+          <Stack.Screen name="EnterGroupPin" component={EnterGroupPin} />
+          <Stack.Screen name="OpenGroup" component={OpenGroup} />
+          <Stack.Screen name="UploadGroup" component={UploadGroup} />
+          <Stack.Screen name="GroupList" component={GroupList} />
+
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -46,9 +65,10 @@ const MainRouter = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={Scanner} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Signup" component={Signup} />
+          <Stack.Screen name="AddPin" component={AddPin} />
+          <Stack.Screen name="GetUserName" component={GetUserName} />
         </Stack.Navigator>
       </NavigationContainer>
     );

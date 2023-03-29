@@ -1,13 +1,15 @@
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {ref, getDownloadURL, uploadBytesResumable} from 'firebase/storage';
 import {auth, db, storage} from '../../firebase';
 import {addDoc, collection, serverTimestamp} from 'firebase/firestore';
 import ImagePicker from 'react-native-image-crop-picker';
+import { PermissionsAndroid } from 'react-native';
 
-const UploadFile = ({navigation}) => {
+const UploadGroup = ({navigation,route}) => {
+  console.log(route.params)
   const [image, setImage] = useState(null);
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -50,20 +52,22 @@ const UploadFile = ({navigation}) => {
             getDownloadURL(imageRef).then(async downloadURL => {
               const col1 = collection(
                 db,
-                'image',
-                auth.currentUser.uid,
+                'groupImage',
+                route.params.groupData,
                 'record',
               );
               const snap = await addDoc(col1, {
                 image: downloadURL,
                 time: serverTimestamp(),
+                user:auth.currentUser.uid
               });
-              navigation.navigate('Gallery');
+              navigation.goBack()
             });
           });
         });
     }
   };
+
   return (
     <View className="flex-1 bg-slate-800">
       <View className="flex flex-row mt-4 px-3 ">
@@ -73,7 +77,7 @@ const UploadFile = ({navigation}) => {
         <Text className="text-white text-xl my-auto mx-auto">Gallery</Text>
       </View>
       <Text className="text-white text-4xl mb-8 mx-auto mt-28">
-        {auth.currentUser.displayName}
+        {route.params.groupName}
       </Text>
       <View className="mt-20 mx-auto">
         <View>
@@ -170,4 +174,4 @@ const UploadFile = ({navigation}) => {
   );
 };
 
-export default UploadFile;
+export default UploadGroup;

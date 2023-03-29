@@ -49,17 +49,12 @@ const OpenImage = ({navigation, route}) => {
         <TouchableOpacity
           onPress={() => deleteDocument(imageId)}
           className="text-gray-50 text-sm mb-auto p-2 bg-red-700 rounded ml-auto">
-          <Icon name="trash-outline" size={20} />
+          <Icon name="trash-outline" color="#fff" size={20} />
         </TouchableOpacity>
       </View>
-      <View className="p-10 rounded-2xl">
-        <Image source={{uri: image}} className="w-full h-5/6 rounded-2xl" />
-        <TouchableOpacity
-          activeOpacity={0.9}
-          onPress={() => downloadImageFromGoogle(route.params.image)}
-          className="p-4 mt-4 mb-10 bg-white rounded-xl">
-          <Text className="text-slate-800 text-center font-bold">Download</Text>
-        </TouchableOpacity>
+      <View className="p-10 rounded-2xl pb-20">
+        <Image source={{uri: image}} className="w-full h-full rounded-2xl" />
+        
       </View>
     </View>
   );
